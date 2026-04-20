@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0  # 실무에서는 구체적인 버전을 명시합니다.
+    container_name: mysql-container-dockercompose
+    restart: always   # 서버가 재부팅되거나 에러가 나도 자동 재실행
+    ports:
+      - "3305:3306"   # 외부 접속 포트 : 컨테이너 내부 포트
+    environment:
+      TZ: Asia/Seoul  # 시스템 타임존 설sxzs정
+      MYSQL_ROOT_PASSWORD: 1q2w3e4r!  # 루트 비밀번호 (실제 운영시 보안 주의)
+      MYSQL_DATABASE: sql_user              # 기동 시 자동 생성할 데이터베이스 이름
+      MYSQL_USER: app_user                     # 앱에서 접속할 전용 계정 생성
+      MYSQL_PASSWORD: app_password_here        # 전용 계정의 비밀번호
+
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
