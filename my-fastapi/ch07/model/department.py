@@ -9,7 +9,7 @@ class Department(Base):
     __tablename__ = "department"
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    personal = Column(Integer)
+    personnel = Column(Integer)
 
     students = relationship(
         "Student",

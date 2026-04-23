@@ -1,12 +1,11 @@
 from contextlib import asynccontextmanager
 
 import uvicorn
-from fastapi import FastAPI, Depends
-from uvicorn import lifespan
+from fastapi import FastAPI
 
 from ch07.db_connect import Base, engine, Session, get_db
 from ch07.model import student, department
-
+from ch07.web import department as department_web
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -20,12 +19,9 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+app.include_router(department_web.router)
 @app.get("/")
-def index(db: Session = Depends(get_db)):
-    # 객체 생성해서 db.add -> db.commit 해서 실제로 들어갔는지 확인
-    dept = department(name = "공통학과", personnel = 64)
-    db.add(dept)
-    db.commit()
+def index():
     return {"message": "department assignment system"}
 
 if __name__ == "__main__":
