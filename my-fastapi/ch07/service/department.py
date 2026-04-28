@@ -4,6 +4,7 @@ from ch07.data import department as d_data
 from ch07.data.department import find_all
 from ch07.db_connect import Session
 from ch07.schema.department import DepartmentResponse, Department
+from ch07.schema.student import StudentResponse
 
 
 def create(db : Session, dept : Department) -> DepartmentResponse:
@@ -34,3 +35,8 @@ def delete(db: Session, id: int) -> bool:
         d_data.delete(db, id)
         return True
 
+def get_students(db: Session, dept_id : int):
+    dept = d_data.find_by_id(db, dept_id)
+    if not dept:
+        raise HTTPException(status_code=404, detail="학과가 존재하지 않음")
+    return [StudentResponse.model_validate(s) for s in dept.students]

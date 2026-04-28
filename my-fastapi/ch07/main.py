@@ -3,9 +3,9 @@ from contextlib import asynccontextmanager
 import uvicorn
 from fastapi import FastAPI
 
-from ch07.db_connect import Base, engine, Session, get_db
-from ch07.model import student, department
+from ch07.db_connect import Base, engine
 from ch07.web import department as department_web
+from ch07.web import student as student_web
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -20,6 +20,7 @@ app = FastAPI(
 )
 
 app.include_router(department_web.router)
+app.include_router(student_web.router)
 @app.get("/")
 def index():
     return {"message": "department assignment system"}

@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends
 
 from ch07.db_connect import Session, get_db
 from ch07.schema.department import DepartmentResponse, Department
+from ch07.schema.student import StudentResponse
 from ch07.service import department as service
 
 router = APIRouter(prefix="/dept")
@@ -17,3 +18,7 @@ def get_all_departments(db: Session = Depends(get_db)):
 @router.delete("/{id}") # /dept/3
 def delete(db: Session = Depends(get_db), id: int = None) -> bool:
     return service.delete(db, id)
+
+@router.get("/{dept_id}/students", response_model= list[StudentResponse] , status_code=200)
+def get_students_by_dept(dept_id: int, db: Session = Depends(get_db)):
+    return service.get_students(db, dept_id)
