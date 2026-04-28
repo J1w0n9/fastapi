@@ -11,3 +11,13 @@ def insert(db: Session, name: str, personnel: int):
 
 def find_by_name(db: Session, name: str):
     return db.query(Department).filter(Department.name == name).first()
+
+def find_all(db:Session):
+    return db.query(Department).all()
+
+def find_by_id(db: Session, id: int):
+    return db.query(Department).filter(Department.id == id).first()
+
+def delete(db: Session, id: int):
+    db.query(Department).filter(Department.id == id).delete()
+    db.commit()
