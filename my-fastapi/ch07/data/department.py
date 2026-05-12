@@ -21,3 +21,14 @@ def find_by_id(db: Session, id: int):
 def delete(db: Session, id: int):
     db.query(Department).filter(Department.id == id).delete()
     db.commit()
+
+def update(db: Session, department: Department, **kwargs):
+    for key, value in kwargs.items():
+        setattr(department, key, value)
+
+    db.commit()
+    db.refresh(department)
+    return department
+
+def find_all_except_default(db : Session):
+    return db.query(Department).filter(Department.name != '공통 학과').all()
